@@ -1,0 +1,30 @@
+{
+  "name": "instaclone",
+  "version": "1.0.0",
+  "description": "Instagram clone with Express, Prisma, React, React Native",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wonho1401/Instaclone.git"
+  },
+  "author": "wonho",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wonho1401/Instaclone/issues"
+  },
+  "homepage": "https://github.com/wonho1401/Instaclone#readme",
+  "dependencies": {
+    "@babel/core": "^7.11.5",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.5",
+    "babel-node": "0.0.1-security",
+    "dotenv": "^8.2.0",
+    "graphql-yoga": "^1.18.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "nodemon": "^2.0.4"
+  },
+  "scripts": {
+    "dev": "nodemon --exec babel-node src/server.js"
+  }
+}
