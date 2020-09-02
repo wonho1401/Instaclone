@@ -18,13 +18,17 @@
     "@babel/preset-env": "^7.11.5",
     "babel-node": "0.0.1-security",
     "dotenv": "^8.2.0",
-    "graphql-yoga": "^1.18.3"
+    "graphql-tools": "^6.1.0",
+    "graphql-yoga": "^1.18.3",
+    "merge-graphql-schemas": "^1.7.8",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "nodemon": "^2.0.4"
   },
   "scripts": {
+    "deploy": "prisma1 deploy",
     "dev": "nodemon --exec babel-node src/server.js"
   }
 }
