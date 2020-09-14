@@ -11,6 +11,10 @@ type AggregateFile {
   count: Int!
 }
 
+type AggregateFullPost {
+  count: Int!
+}
+
 type AggregateLike {
   count: Int!
 }
@@ -28,6 +32,10 @@ type AggregateRoom {
 }
 
 type AggregateUser {
+  count: Int!
+}
+
+type AggregateUserProfile {
   count: Int!
 }
 
@@ -53,6 +61,11 @@ input CommentCreateInput {
   text: String!
   user: UserCreateOneWithoutCommentsInput!
   post: PostCreateOneWithoutCommentsInput!
+}
+
+input CommentCreateManyInput {
+  create: [CommentCreateInput!]
+  connect: [CommentWhereUniqueInput!]
 }
 
 input CommentCreateManyWithoutPostInput {
@@ -146,6 +159,12 @@ input CommentSubscriptionWhereInput {
   NOT: [CommentSubscriptionWhereInput!]
 }
 
+input CommentUpdateDataInput {
+  text: String
+  user: UserUpdateOneRequiredWithoutCommentsInput
+  post: PostUpdateOneRequiredWithoutCommentsInput
+}
+
 input CommentUpdateInput {
   text: String
   user: UserUpdateOneRequiredWithoutCommentsInput
@@ -154,6 +173,18 @@ input CommentUpdateInput {
 
 input CommentUpdateManyDataInput {
   text: String
+}
+
+input CommentUpdateManyInput {
+  create: [CommentCreateInput!]
+  update: [CommentUpdateWithWhereUniqueNestedInput!]
+  upsert: [CommentUpsertWithWhereUniqueNestedInput!]
+  delete: [CommentWhereUniqueInput!]
+  connect: [CommentWhereUniqueInput!]
+  set: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  deleteMany: [CommentScalarWhereInput!]
+  updateMany: [CommentUpdateManyWithWhereNestedInput!]
 }
 
 input CommentUpdateManyMutationInput {
@@ -199,6 +230,11 @@ input CommentUpdateWithoutUserDataInput {
   post: PostUpdateOneRequiredWithoutCommentsInput
 }
 
+input CommentUpdateWithWhereUniqueNestedInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateDataInput!
+}
+
 input CommentUpdateWithWhereUniqueWithoutPostInput {
   where: CommentWhereUniqueInput!
   data: CommentUpdateWithoutPostDataInput!
@@ -207,6 +243,12 @@ input CommentUpdateWithWhereUniqueWithoutPostInput {
 input CommentUpdateWithWhereUniqueWithoutUserInput {
   where: CommentWhereUniqueInput!
   data: CommentUpdateWithoutUserDataInput!
+}
+
+input CommentUpsertWithWhereUniqueNestedInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateDataInput!
+  create: CommentCreateInput!
 }
 
 input CommentUpsertWithWhereUniqueWithoutPostInput {
@@ -439,6 +481,107 @@ input FileWhereInput {
 }
 
 input FileWhereUniqueInput {
+  id: ID
+}
+
+type FullPost {
+  id: ID!
+  post: Post!
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
+  likeCount: Int!
+}
+
+type FullPostConnection {
+  pageInfo: PageInfo!
+  edges: [FullPostEdge]!
+  aggregate: AggregateFullPost!
+}
+
+input FullPostCreateInput {
+  id: ID
+  post: PostCreateOneInput!
+  comments: CommentCreateManyInput
+  likeCount: Int!
+}
+
+type FullPostEdge {
+  node: FullPost!
+  cursor: String!
+}
+
+enum FullPostOrderByInput {
+  id_ASC
+  id_DESC
+  likeCount_ASC
+  likeCount_DESC
+}
+
+type FullPostPreviousValues {
+  id: ID!
+  likeCount: Int!
+}
+
+type FullPostSubscriptionPayload {
+  mutation: MutationType!
+  node: FullPost
+  updatedFields: [String!]
+  previousValues: FullPostPreviousValues
+}
+
+input FullPostSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: FullPostWhereInput
+  AND: [FullPostSubscriptionWhereInput!]
+  OR: [FullPostSubscriptionWhereInput!]
+  NOT: [FullPostSubscriptionWhereInput!]
+}
+
+input FullPostUpdateInput {
+  post: PostUpdateOneRequiredInput
+  comments: CommentUpdateManyInput
+  likeCount: Int
+}
+
+input FullPostUpdateManyMutationInput {
+  likeCount: Int
+}
+
+input FullPostWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  post: PostWhereInput
+  comments_every: CommentWhereInput
+  comments_some: CommentWhereInput
+  comments_none: CommentWhereInput
+  likeCount: Int
+  likeCount_not: Int
+  likeCount_in: [Int!]
+  likeCount_not_in: [Int!]
+  likeCount_lt: Int
+  likeCount_lte: Int
+  likeCount_gt: Int
+  likeCount_gte: Int
+  AND: [FullPostWhereInput!]
+  OR: [FullPostWhereInput!]
+  NOT: [FullPostWhereInput!]
+}
+
+input FullPostWhereUniqueInput {
   id: ID
 }
 
@@ -823,6 +966,12 @@ type Mutation {
   upsertFile(where: FileWhereUniqueInput!, create: FileCreateInput!, update: FileUpdateInput!): File!
   deleteFile(where: FileWhereUniqueInput!): File
   deleteManyFiles(where: FileWhereInput): BatchPayload!
+  createFullPost(data: FullPostCreateInput!): FullPost!
+  updateFullPost(data: FullPostUpdateInput!, where: FullPostWhereUniqueInput!): FullPost
+  updateManyFullPosts(data: FullPostUpdateManyMutationInput!, where: FullPostWhereInput): BatchPayload!
+  upsertFullPost(where: FullPostWhereUniqueInput!, create: FullPostCreateInput!, update: FullPostUpdateInput!): FullPost!
+  deleteFullPost(where: FullPostWhereUniqueInput!): FullPost
+  deleteManyFullPosts(where: FullPostWhereInput): BatchPayload!
   createLike(data: LikeCreateInput!): Like!
   updateLike(data: LikeUpdateInput!, where: LikeWhereUniqueInput!): Like
   upsertLike(where: LikeWhereUniqueInput!, create: LikeCreateInput!, update: LikeUpdateInput!): Like!
@@ -851,6 +1000,11 @@ type Mutation {
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   deleteUser(where: UserWhereUniqueInput!): User
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  createUserProfile(data: UserProfileCreateInput!): UserProfile!
+  updateUserProfile(data: UserProfileUpdateInput!, where: UserProfileWhereUniqueInput!): UserProfile
+  upsertUserProfile(where: UserProfileWhereUniqueInput!, create: UserProfileCreateInput!, update: UserProfileUpdateInput!): UserProfile!
+  deleteUserProfile(where: UserProfileWhereUniqueInput!): UserProfile
+  deleteManyUserProfiles(where: UserProfileWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -896,9 +1050,19 @@ input PostCreateInput {
   user: UserCreateOneWithoutPostInput!
 }
 
+input PostCreateManyInput {
+  create: [PostCreateInput!]
+  connect: [PostWhereUniqueInput!]
+}
+
 input PostCreateManyWithoutUserInput {
   create: [PostCreateWithoutUserInput!]
   connect: [PostWhereUniqueInput!]
+}
+
+input PostCreateOneInput {
+  create: PostCreateInput
+  connect: PostWhereUniqueInput
 }
 
 input PostCreateOneWithoutCommentsInput {
@@ -1038,6 +1202,15 @@ input PostSubscriptionWhereInput {
   NOT: [PostSubscriptionWhereInput!]
 }
 
+input PostUpdateDataInput {
+  location: String
+  caption: String
+  likes: LikeUpdateManyWithoutPostInput
+  files: FileUpdateManyWithoutPostInput
+  comments: CommentUpdateManyWithoutPostInput
+  user: UserUpdateOneRequiredWithoutPostInput
+}
+
 input PostUpdateInput {
   location: String
   caption: String
@@ -1050,6 +1223,18 @@ input PostUpdateInput {
 input PostUpdateManyDataInput {
   location: String
   caption: String
+}
+
+input PostUpdateManyInput {
+  create: [PostCreateInput!]
+  update: [PostUpdateWithWhereUniqueNestedInput!]
+  upsert: [PostUpsertWithWhereUniqueNestedInput!]
+  delete: [PostWhereUniqueInput!]
+  connect: [PostWhereUniqueInput!]
+  set: [PostWhereUniqueInput!]
+  disconnect: [PostWhereUniqueInput!]
+  deleteMany: [PostScalarWhereInput!]
+  updateMany: [PostUpdateManyWithWhereNestedInput!]
 }
 
 input PostUpdateManyMutationInput {
@@ -1072,6 +1257,13 @@ input PostUpdateManyWithoutUserInput {
 input PostUpdateManyWithWhereNestedInput {
   where: PostScalarWhereInput!
   data: PostUpdateManyDataInput!
+}
+
+input PostUpdateOneRequiredInput {
+  create: PostCreateInput
+  update: PostUpdateDataInput
+  upsert: PostUpsertNestedInput
+  connect: PostWhereUniqueInput
 }
 
 input PostUpdateOneRequiredWithoutCommentsInput {
@@ -1127,9 +1319,19 @@ input PostUpdateWithoutUserDataInput {
   comments: CommentUpdateManyWithoutPostInput
 }
 
+input PostUpdateWithWhereUniqueNestedInput {
+  where: PostWhereUniqueInput!
+  data: PostUpdateDataInput!
+}
+
 input PostUpdateWithWhereUniqueWithoutUserInput {
   where: PostWhereUniqueInput!
   data: PostUpdateWithoutUserDataInput!
+}
+
+input PostUpsertNestedInput {
+  update: PostUpdateDataInput!
+  create: PostCreateInput!
 }
 
 input PostUpsertWithoutCommentsInput {
@@ -1145,6 +1347,12 @@ input PostUpsertWithoutFilesInput {
 input PostUpsertWithoutLikesInput {
   update: PostUpdateWithoutLikesDataInput!
   create: PostCreateWithoutLikesInput!
+}
+
+input PostUpsertWithWhereUniqueNestedInput {
+  where: PostWhereUniqueInput!
+  update: PostUpdateDataInput!
+  create: PostCreateInput!
 }
 
 input PostUpsertWithWhereUniqueWithoutUserInput {
@@ -1222,6 +1430,9 @@ type Query {
   file(where: FileWhereUniqueInput!): File
   files(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [File]!
   filesConnection(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FileConnection!
+  fullPost(where: FullPostWhereUniqueInput!): FullPost
+  fullPosts(where: FullPostWhereInput, orderBy: FullPostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [FullPost]!
+  fullPostsConnection(where: FullPostWhereInput, orderBy: FullPostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FullPostConnection!
   like(where: LikeWhereUniqueInput!): Like
   likes(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Like]!
   likesConnection(where: LikeWhereInput, orderBy: LikeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LikeConnection!
@@ -1237,6 +1448,9 @@ type Query {
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  userProfile(where: UserProfileWhereUniqueInput!): UserProfile
+  userProfiles(where: UserProfileWhereInput, orderBy: UserProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [UserProfile]!
+  userProfilesConnection(where: UserProfileWhereInput, orderBy: UserProfileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserProfileConnection!
   node(id: ID!): Node
 }
 
@@ -1410,11 +1624,13 @@ input RoomWhereUniqueInput {
 type Subscription {
   comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
   file(where: FileSubscriptionWhereInput): FileSubscriptionPayload
+  fullPost(where: FullPostSubscriptionWhereInput): FullPostSubscriptionPayload
   like(where: LikeSubscriptionWhereInput): LikeSubscriptionPayload
   message(where: MessageSubscriptionWhereInput): MessageSubscriptionPayload
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
   room(where: RoomSubscriptionWhereInput): RoomSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  userProfile(where: UserProfileSubscriptionWhereInput): UserProfileSubscriptionPayload
 }
 
 type User {
@@ -1610,6 +1826,89 @@ type UserPreviousValues {
   lastName: String
   bio: String
   loginSecret: String
+}
+
+type UserProfile {
+  id: ID!
+  user: User!
+  post(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
+}
+
+type UserProfileConnection {
+  pageInfo: PageInfo!
+  edges: [UserProfileEdge]!
+  aggregate: AggregateUserProfile!
+}
+
+input UserProfileCreateInput {
+  id: ID
+  user: UserCreateOneInput!
+  post: PostCreateManyInput
+}
+
+type UserProfileEdge {
+  node: UserProfile!
+  cursor: String!
+}
+
+enum UserProfileOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type UserProfilePreviousValues {
+  id: ID!
+}
+
+type UserProfileSubscriptionPayload {
+  mutation: MutationType!
+  node: UserProfile
+  updatedFields: [String!]
+  previousValues: UserProfilePreviousValues
+}
+
+input UserProfileSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: UserProfileWhereInput
+  AND: [UserProfileSubscriptionWhereInput!]
+  OR: [UserProfileSubscriptionWhereInput!]
+  NOT: [UserProfileSubscriptionWhereInput!]
+}
+
+input UserProfileUpdateInput {
+  user: UserUpdateOneRequiredInput
+  post: PostUpdateManyInput
+}
+
+input UserProfileWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  user: UserWhereInput
+  post_every: PostWhereInput
+  post_some: PostWhereInput
+  post_none: PostWhereInput
+  AND: [UserProfileWhereInput!]
+  OR: [UserProfileWhereInput!]
+  NOT: [UserProfileWhereInput!]
+}
+
+input UserProfileWhereUniqueInput {
+  id: ID
 }
 
 input UserScalarWhereInput {

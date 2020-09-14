@@ -2,7 +2,6 @@ import "./env";
 import { GraphQLServer } from "graphql-yoga";
 import logger from "morgan";
 import schema from "./schema";
-import passport from "passport";
 import { authenticateJwt } from "./passport";
 import "./passport";
 import { isAuthenticated } from "./middleware";

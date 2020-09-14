@@ -18,11 +18,13 @@ export type Maybe<T> = T | undefined | null;
 export interface Exists {
   comment: (where?: CommentWhereInput) => Promise<boolean>;
   file: (where?: FileWhereInput) => Promise<boolean>;
+  fullPost: (where?: FullPostWhereInput) => Promise<boolean>;
   like: (where?: LikeWhereInput) => Promise<boolean>;
   message: (where?: MessageWhereInput) => Promise<boolean>;
   post: (where?: PostWhereInput) => Promise<boolean>;
   room: (where?: RoomWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
+  userProfile: (where?: UserProfileWhereInput) => Promise<boolean>;
 }
 
 export interface Node {}
@@ -82,6 +84,25 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => FileConnectionPromise;
+  fullPost: (where: FullPostWhereUniqueInput) => FullPostNullablePromise;
+  fullPosts: (args?: {
+    where?: FullPostWhereInput;
+    orderBy?: FullPostOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<FullPost>;
+  fullPostsConnection: (args?: {
+    where?: FullPostWhereInput;
+    orderBy?: FullPostOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FullPostConnectionPromise;
   like: (where: LikeWhereUniqueInput) => LikeNullablePromise;
   likes: (args?: {
     where?: LikeWhereInput;
@@ -177,6 +198,27 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => UserConnectionPromise;
+  userProfile: (
+    where: UserProfileWhereUniqueInput
+  ) => UserProfileNullablePromise;
+  userProfiles: (args?: {
+    where?: UserProfileWhereInput;
+    orderBy?: UserProfileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<UserProfile>;
+  userProfilesConnection: (args?: {
+    where?: UserProfileWhereInput;
+    orderBy?: UserProfileOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => UserProfileConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
   /**
@@ -215,6 +257,22 @@ export interface Prisma {
   }) => FilePromise;
   deleteFile: (where: FileWhereUniqueInput) => FilePromise;
   deleteManyFiles: (where?: FileWhereInput) => BatchPayloadPromise;
+  createFullPost: (data: FullPostCreateInput) => FullPostPromise;
+  updateFullPost: (args: {
+    data: FullPostUpdateInput;
+    where: FullPostWhereUniqueInput;
+  }) => FullPostPromise;
+  updateManyFullPosts: (args: {
+    data: FullPostUpdateManyMutationInput;
+    where?: FullPostWhereInput;
+  }) => BatchPayloadPromise;
+  upsertFullPost: (args: {
+    where: FullPostWhereUniqueInput;
+    create: FullPostCreateInput;
+    update: FullPostUpdateInput;
+  }) => FullPostPromise;
+  deleteFullPost: (where: FullPostWhereUniqueInput) => FullPostPromise;
+  deleteManyFullPosts: (where?: FullPostWhereInput) => BatchPayloadPromise;
   createLike: (data: LikeCreateInput) => LikePromise;
   updateLike: (args: {
     data: LikeUpdateInput;
@@ -287,6 +345,20 @@ export interface Prisma {
   }) => UserPromise;
   deleteUser: (where: UserWhereUniqueInput) => UserPromise;
   deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
+  createUserProfile: (data: UserProfileCreateInput) => UserProfilePromise;
+  updateUserProfile: (args: {
+    data: UserProfileUpdateInput;
+    where: UserProfileWhereUniqueInput;
+  }) => UserProfilePromise;
+  upsertUserProfile: (args: {
+    where: UserProfileWhereUniqueInput;
+    create: UserProfileCreateInput;
+    update: UserProfileUpdateInput;
+  }) => UserProfilePromise;
+  deleteUserProfile: (where: UserProfileWhereUniqueInput) => UserProfilePromise;
+  deleteManyUserProfiles: (
+    where?: UserProfileWhereInput
+  ) => BatchPayloadPromise;
 
   /**
    * Subscriptions
@@ -302,6 +374,9 @@ export interface Subscription {
   file: (
     where?: FileSubscriptionWhereInput
   ) => FileSubscriptionPayloadSubscription;
+  fullPost: (
+    where?: FullPostSubscriptionWhereInput
+  ) => FullPostSubscriptionPayloadSubscription;
   like: (
     where?: LikeSubscriptionWhereInput
   ) => LikeSubscriptionPayloadSubscription;
@@ -317,6 +392,9 @@ export interface Subscription {
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
+  userProfile: (
+    where?: UserProfileSubscriptionWhereInput
+  ) => UserProfileSubscriptionPayloadSubscription;
 }
 
 export interface ClientConstructor<T> {
@@ -368,6 +446,14 @@ export type MessageOrderByInput =
   | "id_DESC"
   | "text_ASC"
   | "text_DESC";
+
+export type FullPostOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "likeCount_ASC"
+  | "likeCount_DESC";
+
+export type UserProfileOrderByInput = "id_ASC" | "id_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
@@ -715,6 +801,42 @@ export type FileWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
+export type FullPostWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface FullPostWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  post?: Maybe<PostWhereInput>;
+  comments_every?: Maybe<CommentWhereInput>;
+  comments_some?: Maybe<CommentWhereInput>;
+  comments_none?: Maybe<CommentWhereInput>;
+  likeCount?: Maybe<Int>;
+  likeCount_not?: Maybe<Int>;
+  likeCount_in?: Maybe<Int[] | Int>;
+  likeCount_not_in?: Maybe<Int[] | Int>;
+  likeCount_lt?: Maybe<Int>;
+  likeCount_lte?: Maybe<Int>;
+  likeCount_gt?: Maybe<Int>;
+  likeCount_gte?: Maybe<Int>;
+  AND?: Maybe<FullPostWhereInput[] | FullPostWhereInput>;
+  OR?: Maybe<FullPostWhereInput[] | FullPostWhereInput>;
+  NOT?: Maybe<FullPostWhereInput[] | FullPostWhereInput>;
+}
+
 export type LikeWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
@@ -736,6 +858,34 @@ export type UserWhereUniqueInput = AtLeastOne<{
   nickname?: Maybe<String>;
   email?: Maybe<String>;
 }>;
+
+export type UserProfileWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface UserProfileWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  user?: Maybe<UserWhereInput>;
+  post_every?: Maybe<PostWhereInput>;
+  post_some?: Maybe<PostWhereInput>;
+  post_none?: Maybe<PostWhereInput>;
+  AND?: Maybe<UserProfileWhereInput[] | UserProfileWhereInput>;
+  OR?: Maybe<UserProfileWhereInput[] | UserProfileWhereInput>;
+  NOT?: Maybe<UserProfileWhereInput[] | UserProfileWhereInput>;
+}
 
 export interface CommentCreateInput {
   id?: Maybe<ID_Input>;
@@ -1926,6 +2076,102 @@ export interface FileUpdateManyMutationInput {
   url?: Maybe<String>;
 }
 
+export interface FullPostCreateInput {
+  id?: Maybe<ID_Input>;
+  post: PostCreateOneInput;
+  comments?: Maybe<CommentCreateManyInput>;
+  likeCount: Int;
+}
+
+export interface PostCreateOneInput {
+  create?: Maybe<PostCreateInput>;
+  connect?: Maybe<PostWhereUniqueInput>;
+}
+
+export interface PostCreateInput {
+  id?: Maybe<ID_Input>;
+  location?: Maybe<String>;
+  caption: String;
+  likes?: Maybe<LikeCreateManyWithoutPostInput>;
+  files?: Maybe<FileCreateManyWithoutPostInput>;
+  comments?: Maybe<CommentCreateManyWithoutPostInput>;
+  user: UserCreateOneWithoutPostInput;
+}
+
+export interface CommentCreateManyInput {
+  create?: Maybe<CommentCreateInput[] | CommentCreateInput>;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+}
+
+export interface FullPostUpdateInput {
+  post?: Maybe<PostUpdateOneRequiredInput>;
+  comments?: Maybe<CommentUpdateManyInput>;
+  likeCount?: Maybe<Int>;
+}
+
+export interface PostUpdateOneRequiredInput {
+  create?: Maybe<PostCreateInput>;
+  update?: Maybe<PostUpdateDataInput>;
+  upsert?: Maybe<PostUpsertNestedInput>;
+  connect?: Maybe<PostWhereUniqueInput>;
+}
+
+export interface PostUpdateDataInput {
+  location?: Maybe<String>;
+  caption?: Maybe<String>;
+  likes?: Maybe<LikeUpdateManyWithoutPostInput>;
+  files?: Maybe<FileUpdateManyWithoutPostInput>;
+  comments?: Maybe<CommentUpdateManyWithoutPostInput>;
+  user?: Maybe<UserUpdateOneRequiredWithoutPostInput>;
+}
+
+export interface PostUpsertNestedInput {
+  update: PostUpdateDataInput;
+  create: PostCreateInput;
+}
+
+export interface CommentUpdateManyInput {
+  create?: Maybe<CommentCreateInput[] | CommentCreateInput>;
+  update?: Maybe<
+    | CommentUpdateWithWhereUniqueNestedInput[]
+    | CommentUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | CommentUpsertWithWhereUniqueNestedInput[]
+    | CommentUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  set?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  disconnect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  deleteMany?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+  updateMany?: Maybe<
+    | CommentUpdateManyWithWhereNestedInput[]
+    | CommentUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface CommentUpdateWithWhereUniqueNestedInput {
+  where: CommentWhereUniqueInput;
+  data: CommentUpdateDataInput;
+}
+
+export interface CommentUpdateDataInput {
+  text?: Maybe<String>;
+  user?: Maybe<UserUpdateOneRequiredWithoutCommentsInput>;
+  post?: Maybe<PostUpdateOneRequiredWithoutCommentsInput>;
+}
+
+export interface CommentUpsertWithWhereUniqueNestedInput {
+  where: CommentWhereUniqueInput;
+  update: CommentUpdateDataInput;
+  create: CommentCreateInput;
+}
+
+export interface FullPostUpdateManyMutationInput {
+  likeCount?: Maybe<Int>;
+}
+
 export interface LikeCreateInput {
   id?: Maybe<ID_Input>;
   user: UserCreateOneWithoutLikesInput;
@@ -2047,16 +2293,6 @@ export interface MessageUpdateManyMutationInput {
   text?: Maybe<String>;
 }
 
-export interface PostCreateInput {
-  id?: Maybe<ID_Input>;
-  location?: Maybe<String>;
-  caption: String;
-  likes?: Maybe<LikeCreateManyWithoutPostInput>;
-  files?: Maybe<FileCreateManyWithoutPostInput>;
-  comments?: Maybe<CommentCreateManyWithoutPostInput>;
-  user: UserCreateOneWithoutPostInput;
-}
-
 export interface PostUpdateInput {
   location?: Maybe<String>;
   caption?: Maybe<String>;
@@ -2106,6 +2342,53 @@ export interface UserUpdateManyMutationInput {
   loginSecret?: Maybe<String>;
 }
 
+export interface UserProfileCreateInput {
+  id?: Maybe<ID_Input>;
+  user: UserCreateOneInput;
+  post?: Maybe<PostCreateManyInput>;
+}
+
+export interface PostCreateManyInput {
+  create?: Maybe<PostCreateInput[] | PostCreateInput>;
+  connect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+}
+
+export interface UserProfileUpdateInput {
+  user?: Maybe<UserUpdateOneRequiredInput>;
+  post?: Maybe<PostUpdateManyInput>;
+}
+
+export interface PostUpdateManyInput {
+  create?: Maybe<PostCreateInput[] | PostCreateInput>;
+  update?: Maybe<
+    | PostUpdateWithWhereUniqueNestedInput[]
+    | PostUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | PostUpsertWithWhereUniqueNestedInput[]
+    | PostUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+  connect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+  set?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+  disconnect?: Maybe<PostWhereUniqueInput[] | PostWhereUniqueInput>;
+  deleteMany?: Maybe<PostScalarWhereInput[] | PostScalarWhereInput>;
+  updateMany?: Maybe<
+    PostUpdateManyWithWhereNestedInput[] | PostUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface PostUpdateWithWhereUniqueNestedInput {
+  where: PostWhereUniqueInput;
+  data: PostUpdateDataInput;
+}
+
+export interface PostUpsertWithWhereUniqueNestedInput {
+  where: PostWhereUniqueInput;
+  update: PostUpdateDataInput;
+  create: PostCreateInput;
+}
+
 export interface CommentSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -2126,6 +2409,21 @@ export interface FileSubscriptionWhereInput {
   AND?: Maybe<FileSubscriptionWhereInput[] | FileSubscriptionWhereInput>;
   OR?: Maybe<FileSubscriptionWhereInput[] | FileSubscriptionWhereInput>;
   NOT?: Maybe<FileSubscriptionWhereInput[] | FileSubscriptionWhereInput>;
+}
+
+export interface FullPostSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<FullPostWhereInput>;
+  AND?: Maybe<
+    FullPostSubscriptionWhereInput[] | FullPostSubscriptionWhereInput
+  >;
+  OR?: Maybe<FullPostSubscriptionWhereInput[] | FullPostSubscriptionWhereInput>;
+  NOT?: Maybe<
+    FullPostSubscriptionWhereInput[] | FullPostSubscriptionWhereInput
+  >;
 }
 
 export interface LikeSubscriptionWhereInput {
@@ -2181,6 +2479,23 @@ export interface UserSubscriptionWhereInput {
   AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
   OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
   NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+}
+
+export interface UserProfileSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<UserProfileWhereInput>;
+  AND?: Maybe<
+    UserProfileSubscriptionWhereInput[] | UserProfileSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    UserProfileSubscriptionWhereInput[] | UserProfileSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    UserProfileSubscriptionWhereInput[] | UserProfileSubscriptionWhereInput
+  >;
 }
 
 export interface NodeNode {
@@ -2826,6 +3141,116 @@ export interface AggregateFileSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
+export interface FullPost {
+  id: ID_Output;
+  likeCount: Int;
+}
+
+export interface FullPostPromise extends Promise<FullPost>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  post: <T = PostPromise>() => T;
+  comments: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  likeCount: () => Promise<Int>;
+}
+
+export interface FullPostSubscription
+  extends Promise<AsyncIterator<FullPost>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  post: <T = PostSubscription>() => T;
+  comments: <T = Promise<AsyncIterator<CommentSubscription>>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  likeCount: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface FullPostNullablePromise
+  extends Promise<FullPost | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  post: <T = PostPromise>() => T;
+  comments: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  likeCount: () => Promise<Int>;
+}
+
+export interface FullPostConnection {
+  pageInfo: PageInfo;
+  edges: FullPostEdge[];
+}
+
+export interface FullPostConnectionPromise
+  extends Promise<FullPostConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<FullPostEdge>>() => T;
+  aggregate: <T = AggregateFullPostPromise>() => T;
+}
+
+export interface FullPostConnectionSubscription
+  extends Promise<AsyncIterator<FullPostConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<FullPostEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateFullPostSubscription>() => T;
+}
+
+export interface FullPostEdge {
+  node: FullPost;
+  cursor: String;
+}
+
+export interface FullPostEdgePromise
+  extends Promise<FullPostEdge>,
+    Fragmentable {
+  node: <T = FullPostPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface FullPostEdgeSubscription
+  extends Promise<AsyncIterator<FullPostEdge>>,
+    Fragmentable {
+  node: <T = FullPostSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateFullPost {
+  count: Int;
+}
+
+export interface AggregateFullPostPromise
+  extends Promise<AggregateFullPost>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateFullPostSubscription
+  extends Promise<AsyncIterator<AggregateFullPost>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface LikeConnection {
   pageInfo: PageInfo;
   edges: LikeEdge[];
@@ -3096,6 +3521,112 @@ export interface AggregateUserSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
+export interface UserProfile {
+  id: ID_Output;
+}
+
+export interface UserProfilePromise extends Promise<UserProfile>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  post: <T = FragmentableArray<Post>>(args?: {
+    where?: PostWhereInput;
+    orderBy?: PostOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserProfileSubscription
+  extends Promise<AsyncIterator<UserProfile>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user: <T = UserSubscription>() => T;
+  post: <T = Promise<AsyncIterator<PostSubscription>>>(args?: {
+    where?: PostWhereInput;
+    orderBy?: PostOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserProfileNullablePromise
+  extends Promise<UserProfile | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  post: <T = FragmentableArray<Post>>(args?: {
+    where?: PostWhereInput;
+    orderBy?: PostOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserProfileConnection {
+  pageInfo: PageInfo;
+  edges: UserProfileEdge[];
+}
+
+export interface UserProfileConnectionPromise
+  extends Promise<UserProfileConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserProfileEdge>>() => T;
+  aggregate: <T = AggregateUserProfilePromise>() => T;
+}
+
+export interface UserProfileConnectionSubscription
+  extends Promise<AsyncIterator<UserProfileConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserProfileEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserProfileSubscription>() => T;
+}
+
+export interface UserProfileEdge {
+  node: UserProfile;
+  cursor: String;
+}
+
+export interface UserProfileEdgePromise
+  extends Promise<UserProfileEdge>,
+    Fragmentable {
+  node: <T = UserProfilePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserProfileEdgeSubscription
+  extends Promise<AsyncIterator<UserProfileEdge>>,
+    Fragmentable {
+  node: <T = UserProfileSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateUserProfile {
+  count: Int;
+}
+
+export interface AggregateUserProfilePromise
+  extends Promise<AggregateUserProfile>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserProfileSubscription
+  extends Promise<AsyncIterator<AggregateUserProfile>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface BatchPayload {
   count: Long;
 }
@@ -3198,6 +3729,50 @@ export interface FilePreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   url: () => Promise<AsyncIterator<String>>;
+}
+
+export interface FullPostSubscriptionPayload {
+  mutation: MutationType;
+  node: FullPost;
+  updatedFields: String[];
+  previousValues: FullPostPreviousValues;
+}
+
+export interface FullPostSubscriptionPayloadPromise
+  extends Promise<FullPostSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = FullPostPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = FullPostPreviousValuesPromise>() => T;
+}
+
+export interface FullPostSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<FullPostSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = FullPostSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = FullPostPreviousValuesSubscription>() => T;
+}
+
+export interface FullPostPreviousValues {
+  id: ID_Output;
+  likeCount: Int;
+}
+
+export interface FullPostPreviousValuesPromise
+  extends Promise<FullPostPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  likeCount: () => Promise<Int>;
+}
+
+export interface FullPostPreviousValuesSubscription
+  extends Promise<AsyncIterator<FullPostPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  likeCount: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface LikeSubscriptionPayload {
@@ -3432,6 +4007,47 @@ export interface UserPreviousValuesSubscription
   loginSecret: () => Promise<AsyncIterator<String>>;
 }
 
+export interface UserProfileSubscriptionPayload {
+  mutation: MutationType;
+  node: UserProfile;
+  updatedFields: String[];
+  previousValues: UserProfilePreviousValues;
+}
+
+export interface UserProfileSubscriptionPayloadPromise
+  extends Promise<UserProfileSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UserProfilePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserProfilePreviousValuesPromise>() => T;
+}
+
+export interface UserProfileSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserProfileSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserProfileSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserProfilePreviousValuesSubscription>() => T;
+}
+
+export interface UserProfilePreviousValues {
+  id: ID_Output;
+}
+
+export interface UserProfilePreviousValuesPromise
+  extends Promise<UserProfilePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+}
+
+export interface UserProfilePreviousValuesSubscription
+  extends Promise<AsyncIterator<UserProfilePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+}
+
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
@@ -3486,6 +4102,14 @@ export const models: Model[] = [
   },
   {
     name: "Message",
+    embedded: false
+  },
+  {
+    name: "UserProfile",
+    embedded: false
+  },
+  {
+    name: "FullPost",
     embedded: false
   }
 ];
