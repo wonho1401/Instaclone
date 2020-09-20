@@ -1,5 +1,4 @@
 import { prisma } from "../../../../generated/prisma-client";
-import { ROOM_FRAGMENT } from "../../../fragments";
 
 export default {
   Mutation: {
@@ -13,17 +12,15 @@ export default {
 
         if (user.id !== toId) {
           //자기 자신에게 보내지 않도록 하는 것.
-          room = await prisma
-            .createRoom({
-              participants: {
-                connect: [{ id: toId }, { id: user.id }],
-              },
-            })
-            .$fragment(ROOM_FRAGMENT);
+          room = await prisma.createRoom({
+            participants: {
+              connect: [{ id: toId }, { id: user.id }],
+            },
+          });
         }
       } else {
         //room이 있을 경우
-        room = await prisma.room({ id: roomId }).$fragment(ROOM_FRAGMENT);
+        room = await prisma.room({ id: roomId });
       }
       if (!room) {
         //에러 출력
