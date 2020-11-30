@@ -8,7 +8,7 @@ export default {
     likes: (parent) => prisma.user({ id: parent.id }).likes(),
     comments: (parent) => prisma.user({ id: parent.id }).comments(),
     rooms: (parent) => prisma.user({ id: parent.id }).rooms(),
-    postCount: (parent) =>
+    postCount: ({ id }) =>
       prisma
         .postsConnection({ where: { user: { id } } })
         .aggregate()
