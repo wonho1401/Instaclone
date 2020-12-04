@@ -16,7 +16,7 @@ const server = new GraphQLServer({
 
 server.express.use(logger("dev"));
 server.express.use(authenticateJwt); // 1. 서버에 전달되는 모든 요청은 이 함수를 통해 통과함.
-server.express.post("api/upload", uploadMiddleware, uploadController);
+server.express.post("/api/upload", uploadMiddleware, uploadController);
 //Middleware는 controller가 실행되기 전에 먼저 실행됨.
 //controller는 req.file을 가져옴. (upload.js 참고)
 // 그 file을 어디서 가져온다? middleware에서 가져온다.
