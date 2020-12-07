@@ -17,6 +17,8 @@ const upload = multer({
   storage: multerS3({
     s3,
     bucket: "w0noinsta",
+    acl: "public-read",
+    //acl을 통해서 public-read속성을 해줘야 aws의 파일에 접근이 가능해짐.
     metadata: function(req, file, cb) {
       cb(null, { fieldName: file.fieldname });
     },
