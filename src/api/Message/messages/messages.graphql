@@ -1,0 +1,3 @@
+type query {
+  messages(roomId: String!): [Message!]!
+}
