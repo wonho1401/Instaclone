@@ -11,3 +11,5 @@ const schema = makeExecutableSchema({
 });
 
 export default schema;
+
+//schema는 데이터의 구조, 표현법, 관계를 나타냄.
